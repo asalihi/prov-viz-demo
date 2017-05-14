@@ -1,0 +1,7 @@
+<div id="container" class="container-fluid">
+  <div id="header" class="card-header">
+    <h1 class="text-center">PROV-VIZ</h1>
+  </div>
+  <dumper id="form" class="row-fluid justify-content-center" (ngSubmittedJsonGraphInstance)="store($event)"></dumper>
+  <graph *ngIf="graph" id="graph" class="row-fluid justify-content-center" [graph]="graph"></graph>
+</div>

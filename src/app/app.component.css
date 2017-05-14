@@ -1,0 +1,21 @@
+#container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+#container h1 {
+  font: normal 50px/1em Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  color: #0275d8;
+}
+
+#header {
+  margin-bottom: 10px;
+}
+
+#graph {
+  flex: 1;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

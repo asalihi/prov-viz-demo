@@ -1,0 +1,16 @@
+<div class="rendering" *ngIf="rendering">
+  <i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw fa-5x"></i>
+</div>
+<div ngbDropdown class="select-view" *ngIf="!rendering">
+  <button id="selectView" class="btn btn-primary" ngbDropdownToggle>Mode</button>
+  <div class="dropdown-menu" aria-labelledby="selectView">
+    <button id="simplifiedMode" class="dropdown-item text-center" [class.selected]="this.mode==='simplified'" (click)="changeMode('simplified')">Simplified</button>
+    <button id="extendedMode" class="dropdown-item text-center" [class.selected]="this.mode==='extended'" (click)="changeMode('extended')">Extended</button>
+  </div>
+</div>
+<div id="zoom-controls" *ngIf="!rendering">
+  <button id="zoom-fit" class="btn btn-primary" (click)="fitContent()"><i class="fa fa-arrows-alt"></i></button>
+  <button id="zoom-in" class="btn btn-primary" (click)="zoomIn()"><i class="fa fa-search-plus"></i></button>
+  <button id="zoom-out" class="btn btn-primary" (click)="zoomOut()"><i class="fa fa-search-minus"></i></button>
+</div>
+<div #svgContainer id="svg-container"></div>

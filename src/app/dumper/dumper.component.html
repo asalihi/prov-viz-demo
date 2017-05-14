@@ -1,0 +1,10 @@
+<form [formGroup]="form" (ngSubmit)="sendData(form.value)">
+  <div class="form-group">
+    <label for="json">PROVENANCE TRAIL</label>
+    <div *ngIf="json.hasError('required') && json.touched" class="alert alert-danger" role="alert">You must enter JSON data</div>
+    <div *ngIf="!json.hasError('required') && json.hasError('invalidJson')" class="alert alert-danger" role="alert">Entered data is not a valid JSON</div>
+    <div *ngIf="!json.hasError('required') && !json.hasError('invalidJson') && json.hasError('invalidJsonGraphInstance')" class="alert alert-danger" role="alert">JSON data must comply with <a href="https://github.com/jsongraph/json-graph-specification" target="_blank" class="alert-link">JSON graph specification</a>, contain a single graph instance and each node must contain a non-empty identifier</div>
+    <textarea #jsonInput [formControl]="form.controls['json']" id="json" class="form-control" rows="5"></textarea>
+  </div>
+  <button type="submit" [disabled]="!form.valid" class="btn btn-primary">Submit</button>
+</form>
