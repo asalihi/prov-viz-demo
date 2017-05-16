@@ -79,6 +79,26 @@ const DATA:Object = {
   }
 };
 
+const SIMPLE_DATA:Object = {
+  "graph": {
+    "directed": true,
+    "nodes": [
+      {
+        "id": "a"
+      },
+      {
+        "id": "b"
+      }
+    ],
+    "edges": [
+      {
+        "source": "a",
+        "target": "b"
+      }
+    ]
+  }
+};
+
 const GRAPH:{simplified:Object, extended:Object} = {
 	"simplified": {
 		"value": {
@@ -210,25 +230,58 @@ describe('MapperService', () => {
     expect(result).toBe(null);
   });
 
-  it('should call functions in charge of creating simplified and extended graphs', () => {
+  it('should create Provenance graph', () => {
+    spyOn(mapperService, 'createProvenanceGraph');
+    spyOn(mapperService, 'createGenericGraph');
+    expect(mapperService['createProvenanceGraph']).not.toHaveBeenCalled();
+    expect(mapperService['createGenericGraph']).not.toHaveBeenCalled();
+    mapperService.format(DATA);
+    expect(mapperService['createProvenanceGraph']).toHaveBeenCalled();
+    expect(mapperService['createGenericGraph']).not.toHaveBeenCalled();
+  });
+
+  it('should create generic graph', () => {
+    spyOn(mapperService, 'createProvenanceGraph');
+    spyOn(mapperService, 'createGenericGraph');
+    expect(mapperService['createProvenanceGraph']).not.toHaveBeenCalled();
+    expect(mapperService['createGenericGraph']).not.toHaveBeenCalled();
+    mapperService.format(SIMPLE_DATA);
+    expect(mapperService['createProvenanceGraph']).not.toHaveBeenCalled();
+    expect(mapperService['createGenericGraph']).toHaveBeenCalled();
+  });
+
+  it('should create simplified and extended graphs', () => {
     spyOn(mapperService, 'createCompleteGraph');
     spyOn(mapperService, 'createSimplifiedGraph');
     expect(mapperService['createCompleteGraph']).not.toHaveBeenCalled();
     expect(mapperService['createSimplifiedGraph']).not.toHaveBeenCalled();
-    var graph = mapperService.format(DATA);
+    mapperService.format(DATA);
     expect(mapperService['createCompleteGraph']).toHaveBeenCalled();
     expect(mapperService['createSimplifiedGraph']).toHaveBeenCalled();
   });
 
+  it('should create extended graph only', () => {
+    spyOn(mapperService, 'createCompleteGraph');
+    spyOn(mapperService, 'createSimplifiedGraph');
+    expect(mapperService['createCompleteGraph']).not.toHaveBeenCalled();
+    expect(mapperService['createSimplifiedGraph']).not.toHaveBeenCalled();
+    mapperService.format(SIMPLE_DATA);
+    expect(mapperService['createCompleteGraph']).toHaveBeenCalled();
+    expect(mapperService['createSimplifiedGraph']).not.toHaveBeenCalled();
+  });
+
   it('should create extended graph', () => {
     mapperService['input'] = DATA;
+    mapperService['direction'] = MapperService['defaultDirection'];
     mapperService['createCompleteGraph']();
     expect(JSON.stringify(mapperService['completeGraph'])).toEqual(JSON.stringify(GRAPH['extended']));
   });
 
   it('should create simplified graph', () => {
     mapperService['input'] = DATA;
-    mapperService['convertNodesAndEdges']();
+    mapperService['direction'] = MapperService['defaultDirection'];
+     // As simplified graph is based on the complete graph, we first need to create the latter
+    mapperService['createCompleteGraph']();
     mapperService['createSimplifiedGraph']();
     expect(JSON.stringify(mapperService['simplifiedGraph'])).toEqual(JSON.stringify(GRAPH['simplified']));
   });

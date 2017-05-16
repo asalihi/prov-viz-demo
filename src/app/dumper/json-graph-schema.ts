@@ -1,3 +1,10 @@
+/*
+JSON-GRAPH SCHEMA AS SPECIFIED HERE: https://github.com/jsongraph/json-graph-specification/blob/master/json-graph-schema.json
+Modifications:
+  - only one graph instance is allowed
+  - all nodes must have a non-empty identifier
+  - direction of the graph can be defined (values taken into account are those permitted by dagre for rankDir attribute)
+*/
 export const JSON_GRAPH_SCHEMA:Object = {
   "title": "JSON graph schema",
   "description": "JSON-graph schema that complies with JSON graph specification.",
@@ -26,6 +33,9 @@ export const JSON_GRAPH_SCHEMA:Object = {
           ],
           "default": true
         },
+        "direction": {
+          "type": "string"
+        },
         "type": {
           "type": "string"
         },
@@ -45,7 +55,8 @@ export const JSON_GRAPH_SCHEMA:Object = {
             "additionalProperties": false,
             "properties": {
               "id": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
               "type": {
                 "type": "string"

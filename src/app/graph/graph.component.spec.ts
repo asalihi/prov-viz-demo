@@ -85,7 +85,8 @@ const DATA:Object = {
   }
 };
 
-const GRAPH:{simplified:Object, extended:Object} = {
+const GRAPH:{provenance?:boolean, simplified:Object, extended:Object} = {
+  "provenance": true,
 	"simplified": {
 		"value": {
 			"rankdir": "BT"
@@ -263,10 +264,10 @@ describe('GraphComponent', () => {
         expect(svg).toBe(null, 'svg is not defined yet');
         component.data = DATA;
         component.ngOnChanges(DATA);
-        tick(500);
+        tick(500); // This is needed as a timeout is explicitly set in GraphComponent for user experience (see displayGraph function)
         svg = fixture.debugElement.nativeElement.querySelector('svg');
         expect(svg).not.toBe(null, 'svg is added to DOM');
-        discardPeriodicTasks();
+        discardPeriodicTasks(); // As test finishes, we need to discard created periodic task (otherwise, an exception is thrown)
     }));
   });
 
@@ -274,9 +275,11 @@ describe('GraphComponent', () => {
     let dropDown:any;
     let dropDownButton:any;
     let simplifiedModeButton;
-    let extendedModeButton;
+    let extendedModeButton;;
 
     beforeEach(() => {
+      component['graph'] = GRAPH;
+      fixture.detectChanges();
       dropDown = fixture.debugElement.nativeElement.querySelector('.select-view');
       dropDownButton = dropDown.querySelector('#selectView');
       simplifiedModeButton = dropDown.querySelector('#simplifiedMode');

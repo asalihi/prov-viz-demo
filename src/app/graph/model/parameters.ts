@@ -1,3 +1,5 @@
+export const ALLOWED_SHAPES:Object = ['rect', 'diamond', 'circle', 'ellipse']
+
 export const SHAPES:Object = {
   'entity': 'ellipse',
   'activity': 'rect',
